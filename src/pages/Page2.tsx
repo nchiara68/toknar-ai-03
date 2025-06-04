@@ -1,41 +1,14 @@
-// src/pages/Home.tsx
-import React from 'react';
-import {
-  View,
-  Heading,
-  Text,
-  useTheme
-} from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
+// src/pages/UploadPage.tsx
+//import React from 'react';
+import { PdfTxtFileUploader } from '../components/PdfTxtFileUploader';
 
-const Home: React.FC = () => {
-  const { tokens } = useTheme();
-
+const UploadPage = () => {
   return (
-    <View
-      padding={tokens.space.large}
-      backgroundColor="#002b4b"
-      height="100vh"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-      }}
-    >
-      <Heading level={1} color="white">
-        🏡 Welcome to the Page 2!
-      </Heading>
-      <Text
-        fontSize={tokens.fontSizes.large}
-        marginTop={tokens.space.medium}
-        color="white" // ✅ white text
-      >
-        This is a basic test page using Amplify UI.
-      </Text>
-    </View>
+    <div style={{ padding: '2rem' }}>
+      <h1>Upload PDF or TXT File</h1>
+      <PdfTxtFileUploader />
+    </div>
   );
 };
 
-export default Home;
+export default UploadPage;
