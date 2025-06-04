@@ -1,11 +1,15 @@
-// src/server/textract-test.mjs
+// src/server/textract-test.ts
 import fs from 'fs';
+import path from 'path';
 import { TextractClient, DetectDocumentTextCommand } from '@aws-sdk/client-textract';
 
-const textract = new TextractClient({ region: 'eu-central-1' }); // update if needed
+// Initialize the Textract client
+const textract = new TextractClient({ region: 'eu-central-1' });
 
-async function runTextract(filePath) {
-  const fileBuffer = fs.readFileSync(filePath);
+// Function to run Textract on a local PDF file
+async function runTextract(filePath: string): Promise<void> {
+  const absolutePath = path.resolve(filePath);
+  const fileBuffer = fs.readFileSync(absolutePath);
 
   const command = new DetectDocumentTextCommand({
     Document: { Bytes: fileBuffer },
@@ -24,5 +28,5 @@ async function runTextract(filePath) {
   }
 }
 
-// ✅ Make sure this is included and runs
-await runTextract('./2023 Audited Financials AG.pdf');
+// Replace with your actual file path
+runTextract('./server/2023 Audited Financials AG.pdf');

@@ -1,12 +1,10 @@
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
-import { TextractClient, DetectDocumentTextCommand } from '@aws-sdk/client-textract';
+import { TextractClient, AnalyzeDocumentCommand } from '@aws-sdk/client-textract';
 import { Readable } from 'stream';
 
-// Create S3 and Textract clients
 const s3 = new S3Client({});
-const textract = new TextractClient({});
+const textract = new TextractClient({ region: 'eu-central-1' });
 
-// Helper to convert a readable stream to a buffer
 const streamToBuffer = async (stream: Readable): Promise<Buffer> => {
   const chunks: Uint8Array[] = [];
   for await (const chunk of stream) {
@@ -15,7 +13,6 @@ const streamToBuffer = async (stream: Readable): Promise<Buffer> => {
   return Buffer.concat(chunks);
 };
 
-// Lambda function handler
 export const handler = async ({
   arguments: { bucket, key },
 }: {
@@ -29,24 +26,21 @@ export const handler = async ({
   const response = await s3.send(new GetObjectCommand({ Bucket: bucket, Key: key }));
   const fileBuffer = await streamToBuffer(response.Body as Readable);
 
-  // Run Textract to extract text
+  // Run Textract AnalyzeDocument with FORMS and TABLES feature types
   const result = await textract.send(
-    new DetectDocumentTextCommand({
+    new AnalyzeDocumentCommand({
       Document: { Bytes: fileBuffer },
+      FeatureTypes: ['TABLES', 'FORMS'],
     })
   );
 
-  // Extract only the lines of text
+  // Extract LINE blocks
   const text =
     result.Blocks?.filter((block) => block.BlockType === 'LINE')
       .map((block) => block.Text)
       .join('\n') ?? '';
 
+  console.log('Extracted text:', text);
+
   return text;
-  const textractOutput = await textract.send(
-  new DetectDocumentTextCommand({ Document: { Bytes: fileBuffer } })
-);
-
-console.log('Textract Blocks:', JSON.stringify(textractOutput.Blocks, null, 2));
-
 };
