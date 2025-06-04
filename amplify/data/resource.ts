@@ -1,20 +1,23 @@
-// Import the Amplify Gen 2 data helpers
 import { a, defineData } from '@aws-amplify/backend';
 import type { ClientSchema } from '@aws-amplify/backend';
-// Define your schema
-const schema = a.schema({
-  // Define a conversation data model named 'chat'
-  chat: a.conversation({
-    // Use a built-in AI model; "Claude 3 Haiku" is valid
-    aiModel: a.ai.model('Claude 3 Haiku'), // model names are lowercase and hyphenated
-    // Define the system prompt for the assistant
-    systemPrompt: 'You are a helpful assistant',
-  })
-  // Define who can access the conversation — in this case, only the resource owner
-  .authorization((allow) => allow.owner())
-});
+import { textract } from '../functions/textract/resource';
 
-// Export the schema to Amplify
+const schema = a.schema({
+  chat: a.conversation({
+    aiModel: a.ai.model('Claude 3 Haiku'),
+    systemPrompt: 'You are a helpful assistant',
+  }).authorization((allow) => allow.owner()),
+
+  extractText: a
+    .mutation()
+    .arguments({
+      bucket: a.string(),
+      key: a.string(),
+    })
+    .returns(a.string())
+    .handler(a.handler.function(textract))
+    .authorization((allow) => allow.authenticated()),
+});
 
 export type Schema = ClientSchema<typeof schema>;
 

@@ -1,3 +1,6 @@
+
+// src/pages/ChatPage.tsx
+
 import { AIConversation} from '@aws-amplify/ui-react-ai'
 import { useAIConversation } from '../AIclient';
 
