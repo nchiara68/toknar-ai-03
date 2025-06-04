@@ -5,7 +5,7 @@ export const PdfTxtFileUploader = () => {
   return (
     <FileUploader
       acceptedFileTypes={['application/pdf', 'text/plain']}
-      path="uploads/"
+      path="public/"
       maxFileCount={1}
       isResumable
       onUploadSuccess={({ key }) => {
