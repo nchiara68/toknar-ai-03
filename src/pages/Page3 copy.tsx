@@ -5,13 +5,12 @@ import type { Schema } from '../../amplify/data/resource';
 import { FileUploader } from '@aws-amplify/ui-react-storage';
 import '@aws-amplify/ui-react/styles.css';
 import { useState } from 'react';
-import { getCurrentUser } from 'aws-amplify/auth';
-
 
 const client = generateClient<Schema>();
-// then call
-//await client.mutations.extractText({ bucket, key });
-console.log('✅ Available mutations:', Object.keys(client.mutations));
+import { getCurrentUser } from 'aws-amplify/auth';
+
+const user = await getCurrentUser();
+console.log('✅ Logged in user:', user);
 
 function ChatReact() {
   const [uploadStatus, setUploadStatus] = useState<string | null>(null);
@@ -75,7 +74,7 @@ function ChatReact() {
     <main className="p-6 space-y-6 max-w-3xl mx-auto">
       <h2 className="text-2xl font-bold">Inquiry our AI engine</h2>
 
-      {/* File Upload Section */}
+      {/* ✅ File Upload Component */}
       <div className="p-4 bg-gray-50 rounded-xl shadow space-y-2">
         <h3 className="text-md font-medium">Upload PDF or TXT</h3>
         <FileUploader
@@ -90,7 +89,7 @@ function ChatReact() {
         )}
       </div>
 
-      {/* AI Chat */}
+      {/* ✅ AI Chat Component */}
       <AIConversation messages={messages} handleSendMessage={sendMessage} />
     </main>
   );

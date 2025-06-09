@@ -1,4 +1,5 @@
 import { FileUploader } from '@aws-amplify/ui-react-storage';
+//src/components/PdfTxtFileUploader.tsx
 import '@aws-amplify/ui-react/styles.css';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../amplify/data/resource';

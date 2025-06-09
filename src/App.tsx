@@ -2,7 +2,7 @@
 //import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Text } from '@aws-amplify/ui-react';
-
+import './amplify/AmplifyConfigure'; // 👈 Ensure Amplify is configured
 import DashboardLayout from './layout/DashboardLayout';
 import ChatPage from './pages/ChatPage';
 import Page2 from './pages/Page2';

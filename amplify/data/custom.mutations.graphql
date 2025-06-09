@@ -1,0 +1,6 @@
+
+type Mutation {
+  extractText(bucket: String!, key: String!): String
+    @function(name: "textract-${env}")
+  # Other mutations here...
+}

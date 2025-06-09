@@ -21,55 +21,35 @@ function ChatReact() {
   const sendMessage = chat[1];
 
   const handleUpload = async ({ key }: { key?: string }) => {
-  console.log('📥 Upload success callback triggered with key:', key);
+    if (!key) return;
 
-  if (!key) {
-    console.warn('⚠️ No file key provided. Aborting.');
-    return;
-  }
+    try {
+      // Optional: Check current auth user before calling mutation
+      const user = await getCurrentUser();
+      console.log('✅ Logged in user:', user);
 
-  try {
-    console.log('🔐 Fetching current user...');
-    const user = await getCurrentUser();
-    console.log('✅ Logged in user:', user);
+      setUploadStatus('📤 Uploading and extracting text...');
 
-    setUploadStatus('📤 Uploading and extracting text...');
-    console.log('📡 Calling extractText mutation with:', {
-      bucket: 'chatbot-uploads',
-      key,
-    });
-
-    const extracted = await client.mutations.extractText({
-      bucket: 'chatbot-uploads',
-      key,
-    });
-
-    console.log('📄 extractText response:', extracted);
-
-    setUploadStatus('✅ Text extracted. Sending to chat...');
-
-    if (extracted.data) {
-      console.log('📨 Sending extracted text to AI chat...');
-      await sendMessage({
-        content: [{ text: extracted.data }],
+      const extracted = await client.mutations.extractText({
+        bucket: 'chatbot-uploads', // Change if needed
+        key,
       });
-      console.log('✅ Text sent to chat successfully.');
-      setUploadStatus('💬 Text sent to chat.');
-    } else {
-      console.warn('⚠️ extractText returned no data.');
-      setUploadStatus('⚠️ No text extracted from file.');
-    }
-  } catch (err) {
-    console.error('❌ Error during extractText mutation or message send:', err);
-    setUploadStatus('❌ Error extracting or sending text.');
 
-    // Optional: Log stack trace for deeper debugging
-    if (err instanceof Error) {
-      console.error('🧵 Stack trace:', err.stack);
-    }
-  }
-};
+      setUploadStatus('✅ Text extracted. Sending to chat...');
 
+      if (extracted.data) {
+        await sendMessage({
+          content: [{ text: extracted.data }],
+        });
+        setUploadStatus('💬 Text sent to chat.');
+      } else {
+        setUploadStatus('⚠️ No text extracted from file.');
+      }
+    } catch (err) {
+      console.error('❌ Error during extractText mutation:', err);
+      setUploadStatus('❌ Error extracting or sending text.');
+    }
+  };
 
   return (
     <main className="p-6 space-y-6 max-w-3xl mx-auto">
