@@ -1,41 +1,12 @@
-// src/pages/Home.tsx
-import React from 'react';
-import {
-  View,
-  Heading,
-  Text,
-  useTheme
-} from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
-
-const Home: React.FC = () => {
-  const { tokens } = useTheme();
-
+//import React from 'react';
+import PdfTxtFileUploader02 from '../components/PdfTxtFileUploader02';
+console.log('✅ Page 4 has been invoked');
+export default function UploadPage() {
   return (
-    <View
-      padding={tokens.space.large}
-      backgroundColor="#002b4b"
-      height="100vh"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-      }}
-    >
-      <Heading level={1} color="white">
-        🏡 Welcome to the Page 4!
-      </Heading>
-      <Text
-        fontSize={tokens.fontSizes.large}
-        marginTop={tokens.space.medium}
-        color="white" // ✅ white text
-      >
-        This is a basic test page using Amplify UI.
-      </Text>
-    </View>
+    <main style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+      <h1>Document Upload & Textract</h1>
+      <p>Upload a PDF or TXT file. It will be stored in S3 and processed by AWS Textract automatically.</p>
+      <PdfTxtFileUploader02 />
+    </main>
   );
-};
-
-export default Home;
+}

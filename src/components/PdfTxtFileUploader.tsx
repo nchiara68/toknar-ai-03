@@ -4,7 +4,7 @@ import '@aws-amplify/ui-react/styles.css';
 import { generateClient } from 'aws-amplify/data';
 import type { Schema } from '../../amplify/data/resource';
 import { useState } from 'react';
-
+console.log('✅ PdfTxtFileUploader has been called');
 const client = generateClient<Schema>();
 
 export const PdfTxtFileUploader = () => {
@@ -44,3 +44,4 @@ export const PdfTxtFileUploader = () => {
     </div>
   );
 };
+console.log('✅ PdfTxtFileUploader has been executed');

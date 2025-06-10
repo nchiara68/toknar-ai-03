@@ -1,4 +1,4 @@
-
+//amplify/data/custom.mutations.graphql
 type Mutation {
   extractText(bucket: String!, key: String!): String
     @function(name: "textract-${env}")
